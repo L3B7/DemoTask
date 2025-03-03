@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
             convertButton.setEnabled(false);
             String input = inputEditText.getText().toString();
             new Thread(() -> {
+                //simulate long running operation
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 ArrayList<Pair<String, String>> parsedData = new ArrayList<>();
                 StringBuilder output = new StringBuilder();
                 try{
@@ -46,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     output.append("No data parsed\n");
                 }else {
                     for (Pair<String, String> pair : parsedData) {
-                        output.append(pair.first).append(" = ").append(pair.second).append("\n");
+                        output.append(pair.first).append(": ").append(pair.second).append("\n");
                     }
                 }
 
