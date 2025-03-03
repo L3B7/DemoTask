@@ -2,8 +2,8 @@
 #include <sstream>
 #include "custom_parser.h"
 
-std::map<std::string, std::string> parseKeyValuePairs(const std::string& input) {
-    std::map<std::string, std::string> dataMap;
+std::vector<std::pair<std::string, std::string>> parseKeyValuePairs(const std::string& input) {
+    std::vector<std::pair<std::string, std::string>> dataPairs;
     std::stringstream ss;
     ss.str(input);
     std::string pair;
@@ -15,7 +15,7 @@ std::map<std::string, std::string> parseKeyValuePairs(const std::string& input) 
         }
         std::string key = pair.substr(0, splitPos);
         std::string value = pair.substr(splitPos + 1);
-        dataMap[key] = value;
+        dataPairs.emplace_back(key, value);
     }
-    return dataMap;
+    return dataPairs;
 }

@@ -1,5 +1,5 @@
 #include <string>
-#include <map>
+#include <vector>
 #include <jni.h>
 #include "custom_parser.h"
 
@@ -10,23 +10,28 @@ Java_com_example_app_NativeLib_parseString(JNIEnv *env, jobject, jstring input) 
     std::string str(utfChars);
     env->ReleaseStringUTFChars(input, utfChars);
 
-    std::map<std::string, std::string> parsedData = parseKeyValuePairs(str);
+    std::vector<std::pair<std::string, std::string>> parsedData = parseKeyValuePairs(str);
 
-    jclass javaHashMapClass = env->FindClass("java/util/HashMap");
-    jmethodID init = env->GetMethodID(javaHashMapClass, "<init>", "()V");
-    jobject javaHashMap = env->NewObject(javaHashMapClass, init);
+    jclass javaArrayListClass = env->FindClass("java/util/ArrayList");
+    jmethodID javaArrayListInit = env->GetMethodID(javaArrayListClass, "<init>", "()V");
+    jobject javaArrayList = env->NewObject(javaArrayListClass, javaArrayListInit);
+    jmethodID javaArrayListAdd = env->GetMethodID(javaArrayListClass, "add", "(Ljava/lang/Object;)Z");
 
-    jmethodID putMethod = env->GetMethodID(javaHashMapClass, "put", 
-                      "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
 
-    // Iterate over the map and insert key-value pairs into HashMap
+    jclass javaPairClass = env->FindClass("android/util/Pair");
+    jmethodID javaPairInit = env->GetMethodID(javaPairClass, "<init>", "(Ljava/lang/Object;Ljava/lang/Object;)V");
+
+
     for (const auto &pair : parsedData) {
         jstring key = env->NewStringUTF(pair.first.c_str());
         jstring value = env->NewStringUTF(pair.second.c_str());
-        env->CallObjectMethod(javaHashMap, putMethod, key, value);
+        jobject javaPair = env->NewObject(javaPairClass, javaPairInit, key, value);
+        env->CallBooleanMethod(javaArrayList, javaArrayListAdd, javaPair);
         env->DeleteLocalRef(key);
         env->DeleteLocalRef(value);
+        env->DeleteLocalRef(javaPair);
     }
 
-    return javaHashMap;  // Return the Java HashMap
+
+    return javaArrayList;
 }
