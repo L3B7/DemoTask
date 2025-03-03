@@ -5,7 +5,7 @@
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_app_NativeLib_parseString(JNIEnv *env, jobject, jstring input) {
+Java_com_example_seontask_NativeLib_parseString(JNIEnv *env, jobject, jstring input) {
     const char *utfChars = env->GetStringUTFChars(input, nullptr);
     std::string str(utfChars);
     env->ReleaseStringUTFChars(input, utfChars);
