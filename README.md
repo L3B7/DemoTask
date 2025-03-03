@@ -13,7 +13,7 @@ First assumed that k-v pairs should work well in a map, but the issue of duplica
 ## Building the lib
 - Have the required NDK
 - set ANDROID_NDK=C:\path\to\your\android-ndk
-- set the proper ABI option, and the CMakeLists.txt location as well (relative to the current build folder)
+- set the proper ABI option, and the CMakeLists.txt location as well (relative to the current build folder), the DANDROID_PLATFORM param should also be set based on the requirements (can be helpful to match it with the min version of the app, not always neccessary)
 - create a build folder for the chosen ABI
 - cmake -DCMAKE_TOOLCHAIN_FILE=%ANDROID_NDK%\build\cmake\android.toolchain.cmake ^ -DANDROID_ABI=<x86_64, arm64-v8a, armeabi-v7a, x86> ^ -DANDROID_PLATFORM=android-21 ^ -DCMAKE_BUILD_TYPE=Release ^ -DCMAKE_C_COMPILER=%CC% ^ -DCMAKE_CXX_COMPILER=%CXX% ^ ../../../DemoTask/cppLib/
 - cmake --build .
