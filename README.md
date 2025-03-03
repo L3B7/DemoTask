@@ -1,9 +1,9 @@
 # DemoTask
 
 ## Considerations:
-### Project Structure:
+### Project Structure - Native/Android integration:
 Simplest build option would be to have the native source files inside the android project, and set it up with gradle+cmake to build the lib for us there.
-However, the task description suggests a decoupled layout (for using the lib in other env.s as well), therefore I opted to have a seperate cpp lib, created a jni wrapper that will be called from the Android env (handling type conversions), build it using android NDK for the target ABI option, then copy the so file to the proper android location.
+However, the task description suggests a decoupled layout (for using the lib in other env.s as well), therefore I opted to have a seperate cpp lib, created a jni wrapper that will be called from the Android env (handling type conversions), build it using android NDK for the target ABI option, then copy the so file to the proper android location. This jni wrapper handles all type conversions and exposes the neccessary C++ functions to the Android system.
 ### Data Structure:
 First assumed that k-v pairs should work well in a map, but the issue of duplicates (and the expected return order that keeps the order of input) suggests array of pairs might be better. (using android.util.Pair)
 ### Assumptions
